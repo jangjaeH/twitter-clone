@@ -6,6 +6,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "surge": "^0.23.0",
     "vue": "^3.0.5"
   },
   "devDependencies": {
