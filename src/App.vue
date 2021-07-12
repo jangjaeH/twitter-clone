@@ -130,7 +130,7 @@
                                         <span class="ml-1 textgray-500 text-sm">11</span>
                                     </div>
                                     <div class="text-gray-500 hover:text-green-500">
-                                        <i class="far fa-retweet hover:bg-blue-50 rounded-full p-2"></i>
+                                        <i class="fas fa-retweet hover:bg-blue-50 rounded-full p-2"></i>
                                         <span class="ml-1 textgray-500 text-sm">11</span>
                                     </div>
                                     <div class="text-gray-500 hover:text-read-500">
