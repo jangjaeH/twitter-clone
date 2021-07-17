@@ -15,7 +15,7 @@
         </div>
       </div>
       <!-- background image -->
-      <div class="bg-gray-300 h-40 relative">
+      <div class="bg-gray-300 h-40 relative flex-none">
         <!-- profile image -->
         <div
           class="border-4 border-white bg-gray-100 w-28 h-28 rounded-full absolute -bottom-14 left-2"
@@ -72,12 +72,19 @@
           마음에 들어요
         </div>
       </div>
+      <!-- tweets -->
+      <div class="overflow-y-auto">
+        <Tweet v-for="tweet in 10" :key="tweet" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import Tweet from "../components/Tweet.vue";
+export default {
+  components: { Tweet },
+};
 </script>
 
 <style></style>
