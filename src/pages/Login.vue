@@ -35,7 +35,7 @@ export default {
         const router = useRouter();
         const onLogin = async () => {
             if (!email.value || !password.value) {
-                alert('이메일, 비밀번호를 모두 입력해주세요.');
+                alert('이메일, 비밀번호를 모두 입력하셔야합니다.');
                 return;
             }
             try {

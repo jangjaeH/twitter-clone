@@ -67,7 +67,7 @@ export default {
                         alert('이메일을 바르게 입력해주세요');
                         break;
                     case 'auth/weak-password':
-                        alert('비밀번호가 너무 쉬워요');
+                        alert('6자리 이상의 비밀번호가 필요합니다.');
                         break;
                     case 'auth/email-already-in-use':
                         alert('이미 가입되어 있는 이메일 입니다.');
