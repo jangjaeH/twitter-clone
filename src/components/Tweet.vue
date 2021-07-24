@@ -4,35 +4,39 @@
     class="flex px-3 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
   >
     <img
-      src="http://picsum.photos/200"
+      :src="currentUser.profile_image_url"
       class="w-10 h-10 rounded-full hover:opacity-80 cursor-pointer"
     />
     <div class="ml-3 flex-1 flex flex-col space-y-1">
       <div class="text-sm space-x-1">
-        <span class="font-bold">KMS(T) 패치 알리미</span>
-        <span class="text-gray-500 text-xs">@kmspatcher</span>
+        <span class="font-bold">{{ tweet.uid }}</span>
+        <span class="text-gray-500 text-xs">@</span>
         <span>·</span>
-        <span class="text-graqy-500 text-xs">2019년 7월 17일</span>
+        <span class="text-graqy-500 text-xs">{{
+          moment(tweet.create_at).fromNow()
+        }}</span>
       </div>
       <!-- tweet body -->
       <div>
-        http://inven.co.kr/board/maple/2304/16586 안녕하세요. WzComparerR2-KMS을
-        수정하여 캐시 이펙트와 믹스염색이 가능하도록 만들어보았습니다. 해당
-        링크에서 다운로드 받으실 수 있습니다. 감사합니다.
+        {{ tweet.tweet_body }}
       </div>
       <!-- tweet actions -->
       <div class="flex justify-between">
         <div class="text-gray-500 hover:text-primary">
           <i class="far fa-comment hover:bg-blue-50 rounded-full p-2"></i>
-          <span class="ml-1 textgray-500 text-sm">11</span>
+          <span class="ml-1 textgray-500 text-sm">{{
+            tweet.num_comments
+          }}</span>
         </div>
         <div class="text-gray-500 hover:text-green-500">
           <i class="fas fa-retweet hover:bg-blue-50 rounded-full p-2"></i>
-          <span class="ml-1 textgray-500 text-sm">11</span>
+          <span class="ml-1 textgray-500 text-sm">{{
+            tweet.num_retweets
+          }}</span>
         </div>
         <div class="text-gray-500 hover:text-read-500">
           <i class="far fa-heart hover:bg-red-50 rounded-full p-2"></i>
-          <span class="ml-1 textgray-500 text-sm">11</span>
+          <span class="ml-1 textgray-500 text-sm">{{ tweet.num_likes }}</span>
         </div>
         <div class="text-gray-500 hover:text-primary">
           <i class="far fa-share-square hover:bg-blue-50 rounded-full p-2"></i>
@@ -43,7 +47,13 @@
 </template>
 
 <script>
-export default {};
+import moment from "moment";
+export default {
+  props: ["currentUser", "tweet"],
+  setup() {
+    return { moment };
+  },
+};
 </script>
 
 <style></style>

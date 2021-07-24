@@ -10,7 +10,9 @@
         <!-- sidemenu icons -->
         <router-link
           :to="route.path"
-          class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer"
+          :class="`hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer ${
+            router.currentRoute.value.name == route.name ? 'text-primary' : ''
+          }`"
           v-for="route in routes"
           :key="route"
         >
@@ -35,10 +37,15 @@
         <button
           class="hidden xl:flex mt-3 px-2 py-1 xl:w-full w-12 h-12 rounded full hover:bg-blue-50 items-center"
         >
-          <img src="http://picsum.photos/100" class="w-10 h-10 rounded-full" />
+          <img
+            :src="currentUser.profile_image_url"
+            class="w-10 h-10 rounded-full"
+          />
           <div class="xl:ml-2 hidden xl:block">
-            <div class="text-sm font-bold">jhjang.com</div>
-            <div class="text-xs text-gray-500 text-left">@jhjang</div>
+            <div class="text-sm font-bold">{{ currentUser.email }}</div>
+            <div class="text-xs text-gray-500 text-left">
+              @{{ currentUser.username }}
+            </div>
           </div>
           <i
             class="ml-auto fas fa-ellipsis-h fa-fw text-xs hidden xl:block"
@@ -46,7 +53,7 @@
         </button>
         <div class="xl:hidden flex justify-center">
           <img
-            src="http://picsum.photos/100"
+            :src="currentUser.profile_image_url"
             class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"
           />
         </div>
@@ -66,10 +73,15 @@
       <button
         class="hover:bg-gray-50 border-b border-gray-100 flex p-3 w-full items-center"
       >
-        <img src="http://picsum.photos/200" class="w-10 h-10 rounded-full" />
+        <img
+          :src="currentUser.profile_image_url"
+          class="w-10 h-10 rounded-full"
+        />
         <div class="ml-2">
-          <div class="font-bold text-sm">jhjang@nate.com</div>
-          <div class="text-left text-gray-500 text-sm">@jhjang</div>
+          <div class="font-bold text-sm">{{ currentUser.email }}</div>
+          <div class="text-left text-gray-500 text-sm">
+            {{ currentUser.username }}
+          </div>
         </div>
         <i class="fas fa-check text-primary ml-auto"></i>
       </button>
@@ -83,7 +95,7 @@
   </div>
 </template>
 <script>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import router from "../router";
 import Trends from "../components/trends.vue";
 import { auth } from "../firebase";
@@ -93,6 +105,7 @@ export default {
   setup() {
     const routes = ref([]);
     const showProfileDropdown = ref(false);
+    const currentUser = computed(() => store.state.user);
 
     const onLoginout = async () => {
       await auth.signOut();
@@ -104,7 +117,7 @@ export default {
       routes.value = router.options.routes || "DefaultLayout";
     });
 
-    return { routes, showProfileDropdown, onLoginout };
+    return { routes, showProfileDropdown, onLoginout, currentUser, router };
   },
 };
 </script>
