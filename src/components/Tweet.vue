@@ -11,7 +11,7 @@
             </div>
             <!-- tweet body -->
             <div>
-                {{ tweet.tweet_body }}
+                <router-link :to="`/tweet/${tweet.id}`">{{ tweet.tweet_body }}</router-link>
             </div>
             <!-- tweet actions -->
             <div class="flex justify-between">
