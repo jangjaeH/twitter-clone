@@ -51,6 +51,7 @@ import { ref, computed, onBeforeMount } from "vue";
 import store from "../store";
 import { TWEET_COLEECTION, USER_COLEECTION } from "../firebase";
 import addTweet from "../utils/addTweet";
+import getTweetInfo from "../utils/getTweetInfo";
 export default {
   components: {
     Tweets,
@@ -63,11 +64,10 @@ export default {
     onBeforeMount(() => {
       TWEET_COLEECTION.orderBy("create_at", "desc").onSnapshot((snapshot) => {
         snapshot.docChanges().forEach(async (change) => {
-          let tweet = await getUserInfo(change.doc.data());
-
+          let tweet = await getTweetInfo(change.doc.data(), currentUser.value);
           if (change.type === "added") {
             tweets.value.splice(change.newIndex, 0, tweet);
-          } else if (change.type == "modefied") {
+          } else if (change.type == "modified") {
             tweets.value.splice(change.oldIndex, 1, tweet);
           } else if (change.type == "removed") {
             tweets.value.splice(change.oldIndex, 1);
@@ -76,17 +76,9 @@ export default {
       });
     });
 
-    const getUserInfo = async (tweet) => {
-      const doc = await USER_COLEECTION.doc(tweet.uid).get();
-      tweet.profile_image_url = doc.data().profile_image_url;
-      tweet.email = doc.data().email;
-      tweet.username = doc.data().username;
-      return tweet;
-    };
-
-    const onAddTweet = () => {
+    const onAddTweet = async () => {
       try {
-        addTweet(tweetBody.value, currentUser.value);
+        await addTweet(tweetBody.value, currentUser.value);
         tweetBody.value = "";
       } catch (e) {
         conosle.log("on add tweet errorr on homepage", e);
