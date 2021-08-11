@@ -48,66 +48,59 @@
             <!-- tabs -->
             <div class="flex border-b border-color mt-3">
                 <div
-                    class="
+                    @click="currentTab = 'tweet'"
+                    :class="`
+                ${currentTab == 'tweet' ? 'border-b border-primary  text-primary ' : 'text-gray'}
                         py-3
-                        text-primary
                         font-bold
-                        border-b border-primary
                         text-center
-                        w-1/4
+                        w-1/3
                         hover:bg-blue-50
                         cursor-pointer
                         hover:text-primary
-                    "
+                    `"
                 >
                     트윗
                 </div>
                 <div
-                    class="
+                    @click="currentTab = 'retweet'"
+                    :class="`
+                ${currentTab == 'retweet' ? 'border-b border-primary  text-primary ' : 'text-gray'}
                         py-3
-                        text-gray
                         font-bold
                         text-center
-                        w-1/4
+                        w-1/3
                         hover:bg-blue-50
                         cursor-pointer
                         hover:text-primary
-                    "
+                    `"
                 >
-                    트윗
+                    리트윗
                 </div>
                 <div
-                    class="
+                    @click="currentTab = 'like'"
+                    :class="`
+                ${currentTab == 'like' ? 'border-b border-primary  text-primary ' : 'text-gray'}
                         py-3
-                        text-gray
                         font-bold
                         text-center
-                        w-1/4
+                        w-1/3
                         hover:bg-blue-50
                         cursor-pointer
                         hover:text-primary
-                    "
+                    `"
                 >
-                    트윗
-                </div>
-                <div
-                    class="
-                        py-3
-                        text-gray
-                        font-bold
-                        text-center
-                        w-1/4
-                        hover:bg-blue-50
-                        cursor-pointer
-                        hover:text-primary
-                    "
-                >
-                    트윗
+                    좋아요
                 </div>
             </div>
             <!-- tweets -->
             <div class="overflow-y-auto">
-                <Tweets :currentUser="currentUser" :tweet="tweet" v-for="tweet in tweets" :key="tweet.id" />
+                <Tweets
+                    :currentUser="currentUser"
+                    :tweet="tweet"
+                    v-for="tweet in currentTab === 'tweet' ? tweets : currentTab == 'retweet' ? reTweets : likeTweets"
+                    :key="tweet.id"
+                />
             </div>
         </div>
     </div>
@@ -116,7 +109,7 @@
 import Tweets from '../components/Tweet.vue';
 import store from '../store';
 import { computed, ref, onBeforeMount } from 'vue';
-import { TWEET_COLEECTION, USER_COLEECTION } from '../firebase';
+import { TWEET_COLEECTION, USER_COLEECTION, RETWEET_COLLECTION, LIKE_COLLECTION } from '../firebase';
 import getTweetInfo from '../utils/getTweetInfo';
 import moment from 'moment';
 export default {
@@ -124,10 +117,10 @@ export default {
     setup() {
         const currentUser = computed(() => store.state.user);
         const tweets = ref([]);
+        const reTweets = ref([]);
+        const likeTweets = ref([]);
+        const currentTab = ref('tweet');
         onBeforeMount(() => {
-            USER_COLEECTION.doc(currentUser.value.uid).onSnapshot((doc) => {
-                store.commit('SET_USER', doc.data());
-            });
             TWEET_COLEECTION.where('uid', '==', currentUser.value.uid)
                 .orderBy('create_at', 'desc')
                 .onSnapshot((snapshot) => {
@@ -135,10 +128,40 @@ export default {
                         let tweet = await getTweetInfo(change.doc.data(), currentUser.value);
                         if (change.type === 'added') {
                             tweets.value.splice(change.newIndex, 0, tweet);
-                        } else if (change.type == 'modified') {
+                        } else if (change.type === 'modified') {
                             tweets.value.splice(change.oldIndex, 1, tweet);
-                        } else if (change.type == 'removed') {
+                        } else if (change.type === 'removed') {
                             tweets.value.splice(change.oldIndex, 1);
+                        }
+                    });
+                });
+            RETWEET_COLLECTION.where('uid', '==', currentUser.value.uid)
+                .orderBy('create_at', 'desc')
+                .onSnapshot((snapshot) => {
+                    snapshot.docChanges().forEach(async (change) => {
+                        const doc = await TWEET_COLEECTION.doc(change.doc.data().from_tweet_id).get();
+                        let tweet = await getTweetInfo(doc.data(), currentUser.value);
+                        if (change.type === 'added') {
+                            reTweets.value.splice(change.newIndex, 0, tweet);
+                        } else if (change.type === 'modified') {
+                            reTweets.value.splice(change.oldIndex, 1, tweet);
+                        } else if (change.type === 'removed') {
+                            reTweets.value.splice(change.oldIndex, 1);
+                        }
+                    });
+                });
+            LIKE_COLLECTION.where('uid', '==', currentUser.value.uid)
+                .orderBy('create_at', 'desc')
+                .onSnapshot((snapshot) => {
+                    snapshot.docChanges().forEach(async (change) => {
+                        const doc = await TWEET_COLEECTION.doc(change.doc.data().from_tweet_id).get();
+                        let tweet = await getTweetInfo(doc.data(), currentUser.value);
+                        if (change.type === 'added') {
+                            likeTweets.value.splice(change.newIndex, 0, tweet);
+                        } else if (change.type === 'modified') {
+                            likeTweets.value.splice(change.oldIndex, 1, tweet);
+                        } else if (change.type === 'removed') {
+                            likeTweets.value.splice(change.oldIndex, 1);
                         }
                     });
                 });
@@ -147,6 +170,9 @@ export default {
             currentUser,
             tweets,
             moment,
+            currentTab,
+            reTweets,
+            likeTweets,
         };
     },
 };
