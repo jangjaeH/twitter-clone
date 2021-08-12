@@ -65,6 +65,12 @@ const routes = [
         meta: { isMenu: true, layout: 'DefaultLayout', requireAuth: true },
     },
     {
+        path: '/Profile/:uid',
+        title: '프로필',
+        component: Profile,
+        meta: { isMenu: false, layout: 'DefaultLayout', requireAuth: true },
+    },
+    {
         path: '/tweet/:id',
         name: 'tweet',
         component: Tweet,
