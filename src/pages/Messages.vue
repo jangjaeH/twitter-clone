@@ -1,7 +1,7 @@
 <template>
     <div class="flex-1 flex">
         <!-- chat list -->
-        <div class="w-2/5 border-r border-gray-100">
+        <div class="w-3/5 border-r border-gray-100">
             <div class="flex flex-col">
                 <div class="p-3 font-bold text-lg border-b border-gray-100 h-14">쪽지</div>
                 <!-- a user list -->
@@ -13,9 +13,9 @@
                 >
                     <img :src="user.profile_image_url" class="w-10 h-10 rounded-full cursor-pointer mr-2" />
                     <div class="flex space-x-2">
-                        <div class="font-bold">{{ user.email }}</div>
-                        <div class="text-gray-500">@{{ user.username }}</div>
-                        <div class="text-gray-500">{{ moment(user.created_at).format('M월 DD일') }}</div>
+                        <div class="font-bold text-sm">{{ user.email }}</div>
+                        <div class="text-gray-500 text-sm">@{{ user.username }}</div>
+                        <div class="text-gray-500 text-sm">{{ moment(user.created_at).format('M월 DD일') }}</div>
                     </div>
                 </div>
             </div>
