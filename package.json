@@ -1,25 +1,25 @@
 {
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
-  },
-  "dependencies": {
-    "firebase": "^8.7.1",
-    "moment": "^2.29.1",
-    "surge": "^0.23.0",
-    "vue": "^3.0.5",
-    "vue-router": "^4.0.10",
-    "vuex": "^4.0.2",
-    "vuex-persistedstate": "^4.0.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^1.2.4",
-    "@vue/compiler-sfc": "^3.0.5",
-    "autoprefixer": "^10.3.0",
-    "postcss": "^8.3.5",
-    "tailwindcss": "^2.2.4",
-    "vite": "^2.4.0"
-  }
+    "version": "0.0.0",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build && firebase deploy",
+        "serve": "vite preview"
+    },
+    "dependencies": {
+        "firebase": "^8.7.1",
+        "moment": "^2.29.1",
+        "surge": "^0.23.0",
+        "vue": "^3.0.5",
+        "vue-router": "^4.0.10",
+        "vuex": "^4.0.2",
+        "vuex-persistedstate": "^4.0.0"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^1.2.4",
+        "@vue/compiler-sfc": "^3.0.5",
+        "autoprefixer": "^10.3.0",
+        "postcss": "^8.3.5",
+        "tailwindcss": "^2.2.4",
+        "vite": "^2.4.0"
+    }
 }
