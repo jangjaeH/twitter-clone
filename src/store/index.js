@@ -23,6 +23,15 @@ const store = createStore({
     SET_UN_FOLLOW: (state, uid) => {
       state.user.followings = state.user.followings.filter((u) => u !== uid);
     },
+    SET_LOCATION: (state, location) => {
+      state.user.location = location;
+    },
+    SET_INTRODUCEMYSELF: (state, introduceMyself) => {
+      state.user.introduceMyself = introduceMyself;
+    },
+    SET_SITE: (state, site) => {
+      state.user.site = site;
+    },
   },
   plugins: [createPersistedState()],
 });

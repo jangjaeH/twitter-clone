@@ -73,9 +73,10 @@ export default {
           background_image_url: "/background.png",
           num_tweets: 0,
           followers: [],
-          introduceMyself: [],
-          location: [],
+          introduceMyself: "",
+          location: "",
           followings: [],
+          site: "",
 
           created_at: Date.now(),
         });

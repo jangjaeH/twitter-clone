@@ -91,28 +91,37 @@
           <div
             class="mx-2 my-1 px-2 py-5 border text-gray border-gray-200 rounded hover:border-primary hover:text-primary"
           >
+            <div class="text-sm">자기소개</div>
             <input
               type="text"
               placeholder="자기소개"
-              class="txet-black focus:outline-none"
+              :value="currentUser.introduceMyself"
+              @change="introduceMyself($event)"
+              class="w-full txet-black focus:outline-none"
             />
           </div>
           <div
             class="mx-2 my-1 px-2 py-3 border text-gray border-gray-200 rounded hover:border-primary hover:text-primary"
           >
+            <div class="text-sm">위치</div>
             <input
               type="text"
               placeholder="위치"
-              class="txet-black focus:outline-none"
+              :value="currentUser.location"
+              @change="location($event)"
+              class="w-full txet-black focus:outline-none"
             />
           </div>
           <div
             class="mx-2 my-1 px-2 py-3 border text-gray border-gray-200 rounded hover:border-primary hover:text-primary"
           >
+            <div class="text-sm">웹사이트</div>
             <input
               type="text"
               placeholder="웹사이트"
-              class="txet-black focus:outline-none"
+              :value="currentUser.site"
+              @change="site($event)"
+              class="w-full txet-black focus:outline-none"
             />
           </div>
         </div>
@@ -134,6 +143,7 @@ export default {
     const backgroundImage = ref(null);
     const profileImageData = ref(null);
     const backgroundImageData = ref(null);
+
     const onAddTweet = () => {
       try {
         addTweet(tweetBody.value, currentUser.value);
@@ -171,11 +181,32 @@ export default {
       reader.readAsDataURL(file);
     };
 
+    // Profile edit value check
+    const location = ($event) => {
+      const locationValue = $event.target.value;
+      location.value = locationValue;
+    };
+
+    const introduceMyself = ($event) => {
+      const introduceMyselfValue = event.target.value;
+      introduceMyself.value = introduceMyselfValue;
+    };
+
+    const site = ($event) => {
+      const siteValue = $event.target.value;
+      site.value = siteValue;
+    };
+
     const onSaveProfile = async () => {
-      if (!profileImageData.value && !backgroundImageData.value) {
+      if (
+        !profileImageData.value &&
+        !backgroundImageData.value &&
+        !location.value &&
+        !introduceMyself.value &&
+        !site.value
+      ) {
         return;
       }
-
       if (profileImageData.value) {
         try {
           const uploadTask = await storage
@@ -205,6 +236,39 @@ export default {
           console.log(`profile image data error:${e}`);
         }
       }
+
+      if (introduceMyself.value) {
+        try {
+          await USER_COLEECTION.doc(currentUser.value.uid).update({
+            introduceMyself: introduceMyself.value,
+          });
+          store.commit("SET_INTRODUCEMYSELF", introduceMyself.value);
+        } catch (e) {
+          console.log(`profile introduceMyself data error:${e}`);
+        }
+      }
+
+      if (location.value) {
+        try {
+          await USER_COLEECTION.doc(currentUser.value.uid).update({
+            location: location.value,
+          });
+          store.commit("SET_LOCATION", location.value);
+        } catch (e) {
+          console.log(`profile location data error:${e}`);
+        }
+      }
+
+      if (site.value) {
+        try {
+          await USER_COLEECTION.doc(currentUser.value.uid).update({
+            site: site.value,
+          });
+          store.commit("SET_SITE", site.value);
+        } catch (e) {
+          console.log(`profile site data error:${e}`);
+        }
+      }
       emit("close-modal");
     };
 
@@ -221,6 +285,9 @@ export default {
       onSaveProfile,
       profileImageData,
       backgroundImageData,
+      introduceMyself,
+      location,
+      site,
     };
   },
 };
