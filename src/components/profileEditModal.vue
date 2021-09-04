@@ -83,6 +83,7 @@
             <div class="text-sm">이름</div>
             <input
               type="text"
+              readonly
               :value="currentUser.email"
               class="txet-black focus:outline-none"
             />

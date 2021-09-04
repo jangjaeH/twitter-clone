@@ -73,7 +73,10 @@ export default {
           background_image_url: "/background.png",
           num_tweets: 0,
           followers: [],
+          introduceMyself: [],
+          location: [],
           followings: [],
+
           created_at: Date.now(),
         });
         alert("회원 가입에 성공하였습니다. 로그인 해주세요.");
