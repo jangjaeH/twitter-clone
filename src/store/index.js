@@ -32,6 +32,15 @@ const store = createStore({
     SET_SITE: (state, site) => {
       state.user.site = site;
     },
+    SET_ADDRESS: (state, address) => {
+      state.user.address = address;
+    },
+    SET_ADDRESS2: (state, address2) => {
+      state.user.address2 = address2;
+    },
+    SET_ZONECODE: (state, zonecode) => {
+      state.user.zonecode = zonecode;
+    },
   },
   plugins: [createPersistedState()],
 });

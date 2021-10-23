@@ -74,7 +74,9 @@ export default {
           num_tweets: 0,
           followers: [],
           introduceMyself: "",
-          location: "",
+          address: "",
+          address2: "",
+          zonecode: "",
           followings: [],
           site: "",
 
