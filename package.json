@@ -10,6 +10,7 @@
     "moment": "^2.29.1",
     "surge": "^0.23.0",
     "vue": "^3.0.5",
+    "vue-daum-postcode": "^1.1.0",
     "vue-router": "^4.0.10",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.0.0"
