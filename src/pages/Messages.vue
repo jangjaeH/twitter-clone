@@ -68,7 +68,7 @@
             }}</span>
           </div>
         </div>
-        <div class="flex-1 overflow-y-scroll">
+        <div id="messageContainer" class="flex-1 overflow-y-scroll">
           <div v-for="message in messages" :key="message.id">
             <!-- chat bubble : my chat -->
             <div
@@ -141,7 +141,13 @@ export default {
         if (user.email === currentUser.value.email) return;
         users.value.push(user);
       });
+      const handleScrollPosition = () => {
+        const element = document.getElementById("messageContainer");
 
+        if (element) {
+          element.scrollTop = element.scrollHeight;
+        }
+      };
       const handleOnSnapshot = (snapshot) => {
         snapshot.docChanges().forEach(async (change) => {
           if (change.type === "added") {
@@ -149,6 +155,10 @@ export default {
             messages.value.push(pushMessage.value[0]);
           }
         });
+
+        setTimeout(() => {
+          handleScrollPosition();
+        }, 100);
       };
 
       MESSAGE_COLLECTION.where("from_uid", "==", currentUser.value.uid)
